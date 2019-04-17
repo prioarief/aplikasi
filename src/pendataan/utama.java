@@ -5,8 +5,10 @@
  */
 package pendataan;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +22,14 @@ public class utama extends javax.swing.JFrame {
     
     public utama() {
         initComponents();
+        // mengambil ukuran layar
+        Dimension layar = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        //membuat titik x dan y
+        int x = layar.width /2 - this.getSize().width/2;
+        int y = layar.height /2 - this.getSize().width/2;
+        
+        this.setLocation(x,y);
     }
 
     /**
@@ -33,7 +43,7 @@ public class utama extends javax.swing.JFrame {
 
         jDesktopPane1 = new javax.swing.JDesktopPane() {
             Image image = new ImageIcon(
-                getClass().getResource("/gambar/background.jpg")).getImage();
+                getClass().getResource("/gambar/backg.jpg")).getImage();
 
             @Override
             protected void paintComponent(Graphics g)

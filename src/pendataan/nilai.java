@@ -146,6 +146,8 @@ public class nilai extends javax.swing.JFrame {
         jTextFieldnilai3 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        search = new javax.swing.JTextField();
+        searchbtn = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -348,7 +350,20 @@ public class nilai extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("DATA NILAI  SISWA PRAKERIN DI DEPARTEMEN ELEKTRONIKA DAN INFFORMATIKA (ELIT)");
+        jLabel9.setText("DATA NILAI  SISWA PRAKERIN DI DEPARTEMEN ELEKTRONIKA DAN INFORMATIKA (ELIT)");
+
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
+        search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchKeyReleased(evt);
+            }
+        });
+
+        searchbtn.setText("Search");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -362,8 +377,16 @@ public class nilai extends javax.swing.JFrame {
                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 1131, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(searchbtn)
+                                        .addGap(30, 30, 30))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jScrollPane1))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -372,9 +395,13 @@ public class nilai extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addContainerGap()
                 .addComponent(jLabel9)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchbtn)
+                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -478,6 +505,37 @@ public class nilai extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldnilai3ActionPerformed
 
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchActionPerformed
+
+    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
+        // membuat tampilan model tabel
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nis");
+        model.addColumn("Nama");
+        model.addColumn("Sekolah");
+        model.addColumn("Jurusan");
+        model.addColumn("Tempat PKL");
+        model.addColumn("Total Nilai");
+
+        //menampilkan data database kedalam tabel
+        try {
+            
+            java.sql.Connection conn = (Connection) config.configDB();
+            java.sql.PreparedStatement stm = conn.prepareStatement("SELECT * FROM tampil_nilai WHERE nama LIKE ?");
+            stm.setString(1, "%" + search.getText() + "%");
+            java.sql.ResultSet res = stm.executeQuery();
+            while (res.next()) {
+                model.addRow(new Object[]{res.getString(1), res.getString(2), res.getString(3),
+                    res.getString(4), res.getString(5), res.getString(6)});
+                
+            }
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -540,5 +598,7 @@ public class nilai extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldnilai2;
     private javax.swing.JTextField jTextFieldnilai3;
     private javax.swing.JTextField jTextFieldnis;
+    private javax.swing.JTextField search;
+    private javax.swing.JButton searchbtn;
     // End of variables declaration//GEN-END:variables
 }

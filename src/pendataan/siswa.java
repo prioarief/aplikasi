@@ -145,6 +145,8 @@ public class siswa extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        searchfield = new javax.swing.JTextField();
+        searchbtn = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -309,7 +311,7 @@ public class siswa extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonubah)
                     .addComponent(jButtonclear))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -339,6 +341,29 @@ public class siswa extends javax.swing.JFrame {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("DATA SISWA PRAKERIN DI DEPARTEMEN ELEKTRONIKA DAN INFFORMATIKA (ELIT)");
 
+        searchfield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchfieldActionPerformed(evt);
+            }
+        });
+        searchfield.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchfieldKeyReleased(evt);
+            }
+        });
+
+        searchbtn.setText("Search");
+        searchbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchbtnActionPerformed(evt);
+            }
+        });
+        searchbtn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchbtnKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -352,7 +377,12 @@ public class siswa extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 850, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(searchfield, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(searchbtn))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -363,10 +393,14 @@ public class siswa extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel9)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchbtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8))
         );
@@ -525,6 +559,93 @@ public class siswa extends javax.swing.JFrame {
         kosong();
     }//GEN-LAST:event_jButtonubahActionPerformed
 
+    private void searchbtnKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchbtnKeyReleased
+        // membuat tampilan model tabel
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nis");
+        model.addColumn("Nama");
+        model.addColumn("Sekolah");
+        model.addColumn("Jenis Kelamin");
+        model.addColumn("Jurusan");
+        model.addColumn("Tempat PKL");
+
+        //menampilkan data database kedalam tabel
+        try {
+            int no = 1;
+            String sql = "SELECT * FROM `tampil_siswa` WHERE `nama` LIKE '%'"+ searchfield.getText() + "'%' ";
+            java.sql.Connection conn = (Connection) config.configDB();
+            java.sql.Statement stm = conn.createStatement();
+            java.sql.ResultSet res = stm.executeQuery(sql);
+            while (res.next()) {
+                model.addRow(new Object[]{res.getString(1), res.getString(2), res.getString(3),
+                    res.getString(4), res.getString(5), res.getString(6)});
+                
+            }
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchbtnKeyReleased
+
+    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
+        // membuat tampilan model tabel
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nis");
+        model.addColumn("Nama");
+        model.addColumn("Sekolah");
+        model.addColumn("Jenis Kelamin");
+        model.addColumn("Jurusan");
+        model.addColumn("Tempat PKL");
+
+        //menampilkan data database kedalam tabel
+        try {
+            int no = 1;
+//            String sql = "SELECT * FROM `tampil_siswa` WHERE `nama` LIKE '%'"+ searchfield.getText() + "'%' ";
+            java.sql.Connection conn = (Connection) config.configDB();
+            java.sql.PreparedStatement stm = conn.prepareStatement("SELECT * FROM tampil_siswa WHERE nama LIKE ?");
+            stm.setString(1, "%" + searchfield.getText() + "%");
+            java.sql.ResultSet res = stm.executeQuery();
+            while (res.next()) {
+                model.addRow(new Object[]{res.getString(1), res.getString(2), res.getString(3),
+                    res.getString(4), res.getString(5), res.getString(6)});
+                
+            }
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchbtnActionPerformed
+
+    private void searchfieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchfieldKeyReleased
+        // membuat tampilan model tabel
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nis");
+        model.addColumn("Nama");
+        model.addColumn("Sekolah");
+        model.addColumn("Jenis Kelamin");
+        model.addColumn("Jurusan");
+        model.addColumn("Tempat PKL");
+
+        //menampilkan data database kedalam tabel
+        try {
+            int no = 1;
+//            String sql = "SELECT * FROM `tampil_siswa` WHERE `nama` LIKE '%'"+ searchfield.getText() + "'%' ";
+            java.sql.Connection conn = (Connection) config.configDB();
+            java.sql.PreparedStatement stm = conn.prepareStatement("SELECT * FROM tampil_siswa WHERE nama LIKE ?");
+            stm.setString(1, "%" + searchfield.getText() + "%");
+            java.sql.ResultSet res = stm.executeQuery();
+            while (res.next()) {
+                model.addRow(new Object[]{res.getString(1), res.getString(2), res.getString(3),
+                    res.getString(4), res.getString(5), res.getString(6)});
+                
+            }
+            jTable1.setModel(model);
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_searchfieldKeyReleased
+
+    private void searchfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchfieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -585,5 +706,7 @@ public class siswa extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldaslsklh;
     private javax.swing.JTextField jTextFieldnama;
     private javax.swing.JTextField jTextFieldnis;
+    private javax.swing.JButton searchbtn;
+    private javax.swing.JTextField searchfield;
     // End of variables declaration//GEN-END:variables
 }

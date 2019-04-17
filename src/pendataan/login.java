@@ -5,9 +5,10 @@
  */
 package pendataan;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -17,29 +18,22 @@ import javax.swing.JOptionPane;
  */
 public class login extends javax.swing.JFrame {
     
-    /**
-     * Creates new form login
-     * @throws java.sql.SQLException
-     */
+    
     public login(){
         initComponents();
         
+        // mengambil ukuran layar
+        Dimension layar = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        //membuat titik x dan y
+        int x = layar.width /2 - this.getSize().width/2;
+        int y = layar.height /2 - this.getSize().width/2;
+        
+        this.setLocation(x,y);
+        
     }
     
-    public class koneksi {
-    Connection con;
-    Statement stm;
     
-    public void config(){
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql://localhost/aplikasi_Pendataan", "root", "");
-            stm = con.createStatement();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "koneksi gagal "+e.getMessage());
-        }
-    }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -145,6 +139,8 @@ public class login extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "berhasil login");
                     utama e = new utama();
                     e.show();
+                    
+                    this.hide();
                 }
             }else{
                     JOptionPane.showMessageDialog(null, "username atau password salah");
