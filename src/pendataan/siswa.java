@@ -629,8 +629,9 @@ public class siswa extends javax.swing.JFrame {
             int no = 1;
 //            String sql = "SELECT * FROM `tampil_siswa` WHERE `nama` LIKE '%'"+ searchfield.getText() + "'%' ";
             java.sql.Connection conn = (Connection) config.configDB();
-            java.sql.PreparedStatement stm = conn.prepareStatement("SELECT * FROM tampil_siswa WHERE nama LIKE ?");
+            java.sql.PreparedStatement stm = conn.prepareStatement("SELECT * FROM tampil_siswa WHERE nama LIKE ? OR nis LIKE ?");
             stm.setString(1, "%" + searchfield.getText() + "%");
+            stm.setString(2, "%" + searchfield.getText() + "%");
             java.sql.ResultSet res = stm.executeQuery();
             while (res.next()) {
                 model.addRow(new Object[]{res.getString(1), res.getString(2), res.getString(3),

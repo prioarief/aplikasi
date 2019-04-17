@@ -1,5 +1,6 @@
 package pendataan;
 
+
 import java.awt.HeadlessException;
 import static java.lang.Integer.parseInt;
 import java.sql.Connection;
@@ -26,7 +27,10 @@ public class nilai extends javax.swing.JFrame {
         initComponents();
         load_table();
         kosong();
+        
     }
+    
+    
     
     private boolean validasiInput(){
         boolean valid = false;
@@ -523,8 +527,10 @@ public class nilai extends javax.swing.JFrame {
         try {
             
             java.sql.Connection conn = (Connection) config.configDB();
-            java.sql.PreparedStatement stm = conn.prepareStatement("SELECT * FROM tampil_nilai WHERE nama LIKE ?");
+            java.sql.PreparedStatement stm = conn.prepareStatement("SELECT * FROM tampil_nilai WHERE nama LIKE ?"
+                    + "OR nis LIKE ?");
             stm.setString(1, "%" + search.getText() + "%");
+            stm.setString(2, "%" + search.getText() + "%");
             java.sql.ResultSet res = stm.executeQuery();
             while (res.next()) {
                 model.addRow(new Object[]{res.getString(1), res.getString(2), res.getString(3),
